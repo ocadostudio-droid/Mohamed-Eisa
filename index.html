@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mohamed Eisa — Architect & BIM Modeler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --orange:  #FF4612;
+      --dark:    #0F0F0F;
+      --mid:     #222222;
+      --surface: #F4EFE8;
+      --stone:   #E8E2D9;
+      --white:   #FFFFFF;
+      --grey:    #888888;
+      --font-d:  'Big Shoulders Display', sans-serif;
+      --font-b:  'Inter', sans-serif;
+      --ease:    cubic-bezier(0.4,0,0.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--surface);color:var(--dark);font-family:var(--font-b);font-weight:300;line-height:1.6;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    img{display:block;width:100%;height:100%;object-fit:cover;}
+
+    .container{max-width:1280px;margin:0 auto;padding:0 32px;}
+    .o{color:var(--orange);}
+    .ob{color:var(--orange);font-weight:600;}
+    .section-label{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:16px;}
+
+    /* ANIMATE */
+    .anim{opacity:0;transform:translateY(24px);transition:opacity .65s var(--ease),transform .65s var(--ease);}
+    .anim.on{opacity:1;transform:none;}
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+    .d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:900;padding:20px 0;transition:background .4s,padding .4s,box-shadow .4s;}
+    nav.scrolled{background:var(--surface);padding:14px 0;box-shadow:0 1px 0 rgba(0,0,0,.08);}
+    nav .container{display:flex;align-items:center;justify-content:space-between;}
+    .nav-logo{font-family:var(--font-d);font-weight:900;font-size:22px;color:#fff;transition:color .4s;}
+    nav.scrolled .nav-logo{color:var(--dark);}
+    .nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
+    .nav-links a{font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);transition:color .3s;}
+    nav.scrolled .nav-links a{color:var(--mid);}
+    .nav-links a:hover{color:var(--orange);}
+    .nav-cta{background:var(--orange);color:#fff !important;padding:9px 22px;font-weight:500 !important;}
+    .nav-cta:hover{background:#e03e0f !important;}
+    .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+    .ham span{display:block;width:24px;height:2px;background:#fff;transition:background .4s;}
+    nav.scrolled .ham span{background:var(--dark);}
+    .mob-menu{display:none;position:fixed;inset:0;background:var(--dark);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:36px;}
+    .mob-menu.open{display:flex;}
+    .mob-menu a{font-family:var(--font-d);font-weight:900;font-size:36px;color:#fff;}
+    .mob-menu a:hover{color:var(--orange);}
+    .mob-close{position:absolute;top:24px;right:32px;font-size:28px;color:#fff;background:none;border:none;cursor:pointer;}
+
+    /* HERO */
+    #hero{position:relative;height:100vh;min-height:640px;display:flex;align-items:flex-end;overflow:hidden;}
+    .hero-bg{position:absolute;inset:0;background:url('./images/hero.jpg') center/cover;transform:scale(1.06);transition:transform 8s var(--ease);}
+    #hero.loaded .hero-bg{transform:scale(1);}
+    .hero-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.88) 0%,rgba(10,10,10,.45) 55%,rgba(10,10,10,.2) 100%);}
+    .hero-content{position:relative;z-index:2;padding:80px 0;width:100%;}
+    .hero-eye{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);margin-bottom:20px;}
+    .hero-name{font-family:var(--font-d);font-weight:900;font-size:clamp(52px,9vw,116px);line-height:.9;color:#fff;margin-bottom:22px;}
+    .hero-name span{color:var(--orange);}
+    .hero-titles{font-size:14px;font-weight:300;letter-spacing:.08em;color:rgba(255,255,255,.65);text-transform:uppercase;margin-bottom:40px;}
+    .hero-titles strong{color:rgba(255,255,255,.9);font-weight:400;}
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;font-family:var(--font-b);font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:all .3s var(--ease);border:none;cursor:pointer;}
+    .btn-pri{background:var(--orange);color:#fff;}
+    .btn-pri:hover{background:#e03e0f;transform:translateY(-2px);}
+    .btn-out{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4);}
+    .btn-out:hover{border-color:#fff;transform:translateY(-2px);}
+    .btn-dk{background:var(--dark);color:#fff;}
+    .btn-dk:hover{background:#222;transform:translateY(-2px);}
+
+    /* ABOUT */
+    #about{padding:120px 0;background:#fff;}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+    .about-heading{font-family:var(--font-d);font-weight:900;font-size:clamp(38px,5vw,68px);line-height:.92;color:var(--dark);margin-bottom:32px;}
+    .about-body{font-size:15px;font-weight:300;line-height:1.9;color:#444;margin-bottom:24px;}
+    .about-body a{color:var(--orange);font-weight:500;}
+    .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:40px;}
+    .stat-box{background:var(--surface);padding:32px 28px;}
+    .stat-num{font-family:var(--font-d);font-weight:900;font-size:52px;line-height:1;color:var(--orange);margin-bottom:6px;}
+    .stat-label{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);}
+
+    /* SKILLS */
+    #skills{padding:120px 0;background:var(--surface);}
+    .sec-head{margin-bottom:56px;}
+    .sec-title{font-family:var(--font-d);font-weight:900;font-size:clamp(36px,4vw,60px);line-height:.92;color:var(--dark);}
+    .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+    .sk-card{background:#fff;padding:44px 32px;}
+    .sk-icon{font-size:26px;margin-bottom:18px;}
+    .sk-title{font-family:var(--font-d);font-weight:900;font-size:22px;color:var(--dark);margin-bottom:4px;}
+    .sk-bar{width:28px;height:2px;background:var(--orange);margin:14px 0;}
+    .sk-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+    .sk-list li{font-size:13px;font-weight:300;color:#555;display:flex;align-items:center;gap:10px;}
+    .sk-list li::before{content:'';display:block;width:4px;height:4px;background:var(--orange);flex-shrink:0;}
+
+    /* PROJECTS */
+    #projects{padding:120px 0;background:var(--dark);}
+    .proj-heading{font-family:var(--font-d);font-weight:900;font-size:clamp(40px,5vw,70px);line-height:.92;color:#fff;margin-bottom:12px;}
+    .proj-heading span{color:var(--orange);}
+    .proj-sub{font-size:14px;font-weight:300;color:var(--grey);margin-bottom:56px;max-width:500px;}
+    .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+    .pc{background:#1a1a1a;overflow:hidden;cursor:pointer;position:relative;}
+    .pc:nth-child(1){grid-column:span 2;}
+    .pc-img{width:100%;height:300px;overflow:hidden;}
+    .pc:nth-child(1) .pc-img{height:380px;}
+    .pc-img img{transition:transform .6s var(--ease);}
+    .pc:hover .pc-img img{transform:scale(1.05);}
+    .pc-info{padding:24px 24px 28px;border-left:2px solid transparent;transition:border-color .3s;}
+    .pc:hover .pc-info{border-color:var(--orange);}
+    .pc-tag{font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;}
+    .pc-name{font-family:var(--font-d);font-weight:900;font-size:20px;color:#fff;margin-bottom:8px;line-height:1.1;}
+    .pc-desc{font-size:12px;font-weight:300;color:var(--grey);line-height:1.7;}
+    .pc-cta{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);opacity:0;transform:translateX(-6px);transition:opacity .3s,transform .3s;}
+    .pc:hover .pc-cta{opacity:1;transform:none;}
+
+    /* MODAL */
+    .modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:2000;overflow-y:auto;}
+    .modal-ov.open{display:flex;align-items:flex-start;justify-content:center;padding:40px 20px;}
+    .modal-box{background:#111;width:100%;max-width:960px;position:relative;margin:auto;}
+    .modal-close{position:sticky;top:16px;left:100%;z-index:10;width:44px;height:44px;background:var(--orange);border:none;cursor:pointer;font-size:20px;color:#fff;display:flex;align-items:center;justify-content:center;float:right;margin:16px 16px -44px 0;}
+    .modal-gallery{position:relative;background:#000;overflow:hidden;}
+    .modal-gallery-wrap{display:flex;width:100%;}
+    .modal-slide{min-width:100%;height:460px;flex-shrink:0;}
+    .modal-slide img{width:100%;height:100%;object-fit:cover;}
+    .modal-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#fff;font-size:22px;width:44px;height:60px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center;}
+    .modal-nav:hover{background:var(--orange);}
+    .modal-prev{left:0;}
+    .modal-next{right:0;}
+    .modal-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
+    .modal-dot{width:7px;height:7px;background:rgba(255,255,255,.4);border:none;cursor:pointer;}
+    .modal-dot.active{background:var(--orange);}
+    .modal-body{padding:36px 40px 44px;}
+    .modal-tag{font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+    .modal-title{font-family:var(--font-d);font-weight:900;font-size:34px;color:#fff;margin-bottom:12px;}
+    .modal-desc{font-size:14px;font-weight:300;color:#aaa;line-height:1.8;margin-bottom:24px;}
+    .modal-chips{display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{font-size:11px;font-weight:400;letter-spacing:.08em;padding:5px 14px;border:1px solid #333;color:#888;text-transform:uppercase;}
+
+    /* PHOTOGRAPHY */
+    #photography{padding:100px 0;background:var(--dark);}
+    .photo-heading{font-family:var(--font-d);font-weight:900;font-size:clamp(30px,3.5vw,50px);color:#fff;margin-bottom:8px;}
+    .photo-sub{font-size:13px;font-weight:300;color:var(--grey);margin-bottom:48px;}
+    .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;max-width:900px;margin:0 auto;}
+    .photo-pair{display:contents;}
+    .photo-item{position:relative;overflow:hidden;}
+    .photo-item img{height:420px;width:100%;object-fit:cover;transition:transform .5s var(--ease);filter:grayscale(15%);}
+    .photo-item:hover img{transform:scale(1.04);filter:grayscale(0%);}
+    .photo-caption{position:absolute;bottom:0;left:0;right:0;padding:16px 18px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);color:rgba(255,255,255,.7);font-size:11px;letter-spacing:.1em;text-transform:uppercase;}
+
+    /* CLIENTS */
+    #clients{padding:80px 0;background:#0a0a0a;}
+    .clients-label{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);text-align:center;margin-bottom:48px;}
+    .clients-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;}
+    .client-card{background:#141414;padding:44px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:200px;flex:1;max-width:280px;border-bottom:2px solid transparent;transition:border-color .3s,background .3s;}
+    .client-card:hover{border-color:var(--orange);background:#1a1a1a;}
+    .client-name{font-family:var(--font-d);font-weight:900;font-size:16px;color:#fff;letter-spacing:.04em;text-align:center;text-transform:uppercase;}
+    .client-note{font-size:10px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);text-align:center;}
+
+    /* RATINGS */
+    #ratings{padding:80px 0;background:#fff;}
+    .ratings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;}
+    .rating-card{background:var(--surface);padding:32px 28px;}
+    .stars{display:flex;gap:4px;margin-bottom:16px;}
+    .star{color:var(--orange);font-size:18px;}
+    .star.empty{color:#ddd;}
+    .rating-text{font-size:14px;font-weight:300;color:#444;line-height:1.7;margin-bottom:20px;font-style:italic;}
+    .rating-client{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);}
+    .rating-proj{font-size:11px;color:var(--orange);margin-top:2px;}
+
+    /* CERTIFICATIONS */
+    #certifications{padding:100px 0;background:#fff;}
+    .certs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:48px;}
+    .cert-card{background:var(--surface);padding:32px 24px;border-top:3px solid transparent;transition:border-color .3s;}
+    .cert-card:hover{border-color:var(--orange);}
+    .cert-yr{font-family:var(--font-d);font-weight:900;font-size:38px;color:var(--orange);opacity:.35;margin-bottom:14px;line-height:1;}
+    .cert-name{font-size:13px;font-weight:500;color:var(--dark);margin-bottom:5px;}
+    .cert-iss{font-size:12px;font-weight:300;color:var(--grey);}
+    .cert-badge{display:inline-block;margin-top:12px;font-size:9px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);padding:3px 8px;}
+    .cert-badge.ip{color:#888;border-color:#888;}
+    .edu-bar{margin-top:2px;background:var(--surface);padding:32px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .edu-title{font-family:var(--font-d);font-weight:900;font-size:18px;color:var(--dark);}
+    .edu-sub{font-size:12px;color:var(--grey);margin-top:4px;}
+    .tag-pill{display:inline-block;font-size:9px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);padding:3px 10px;}
+
+    /* CONTACT */
+    #contact{padding:120px 0;background:var(--surface);}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+    .contact-heading{font-family:var(--font-d);font-weight:900;font-size:clamp(38px,5vw,70px);line-height:.92;color:var(--dark);margin-bottom:22px;}
+    .contact-heading em{font-style:normal;color:var(--orange);}
+    .contact-body{font-size:14px;font-weight:300;color:#555;line-height:1.8;margin-bottom:44px;max-width:360px;}
+    .contact-links{display:flex;flex-direction:column;gap:2px;}
+    .cl{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fff;font-size:13px;font-weight:300;color:var(--dark);transition:background .3s,color .3s;border-left:2px solid transparent;}
+    .cl:hover{background:var(--dark);color:#fff;border-color:var(--orange);}
+    .cl svg{color:var(--orange);flex-shrink:0;}
+    .big-ctas{display:flex;flex-direction:column;gap:2px;}
+    .big-cta{display:flex;align-items:center;justify-content:space-between;padding:30px 36px;transition:transform .3s;}
+    .big-cta:hover{transform:translateX(6px);}
+    .bc-or{background:var(--orange);}
+    .bc-dk{background:var(--dark);}
+    .bc-md{background:#1a1a1a;}
+    .bc-bl{background:#111;}
+    .bct{font-family:var(--font-d);font-weight:900;font-size:20px;color:#fff;}
+    .bcs{font-size:11px;font-weight:300;color:rgba(255,255,255,.6);margin-top:3px;letter-spacing:.06em;text-transform:uppercase;}
+    .bca{font-size:22px;color:#fff;}
+
+    /* FOOTER */
+    footer{background:var(--dark);padding:44px 0;}
+    .fi{display:flex;align-items:center;justify-content:space-between;}
+    .fl{font-family:var(--font-d);font-weight:900;font-size:26px;color:#fff;}
+    .fl span{color:var(--orange);}
+    .fc{font-size:11px;font-weight:300;color:var(--grey);}
+    .fs{display:flex;gap:20px;}
+    .fs a{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);transition:color .3s;}
+    .fs a:hover{color:var(--orange);}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      .about-grid{grid-template-columns:1fr;gap:48px;}
+      .skills-grid{grid-template-columns:repeat(2,1fr);}
+      .proj-grid{grid-template-columns:1fr 1fr;}
+      .pc:nth-child(1){grid-column:span 2;}
+      .certs-grid{grid-template-columns:repeat(2,1fr);}
+      .ratings-grid{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:768px){
+      .container{padding:0 20px;}
+      .nav-links{display:none;}
+      .ham{display:flex;}
+      .skills-grid{grid-template-columns:1fr;}
+      .proj-grid{grid-template-columns:1fr;}
+      .pc:nth-child(1){grid-column:span 1;}
+      .pc:nth-child(1) .pc-img{height:280px;}
+      .photo-grid{grid-template-columns:1fr;}
+      .photo-item img{height:300px;}
+      .contact-grid{grid-template-columns:1fr;}
+      .certs-grid{grid-template-columns:1fr 1fr;}
+      .ratings-grid{grid-template-columns:1fr;}
+      .fi{flex-direction:column;gap:20px;text-align:center;}
+      .fs{justify-content:center;}
+      .clients-grid{gap:2px;}
+      .client-card{min-width:160px;padding:24px 20px;}
+      .modal-body{padding:24px 20px 32px;}
+      .modal-slide{height:260px;}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .anim{opacity:1;transform:none;}
+      *{transition-duration:.01ms !important;animation-duration:.01ms !important;}
+    }
+
+.client-logo{max-height:72px;max-width:180px;width:auto;height:auto;object-fit:contain;transition:opacity .3s;opacity:.9;}
+    .client-logo-gold{filter:brightness(1.6) sepia(1) saturate(2) hue-rotate(5deg);}
+    .client-logo-sq{max-height:70px;max-width:70px;border-radius:6px;}
+    .client-logo-wrap-dark{background:#222;border-radius:6px;padding:6px 12px;}
+    .client-card:hover .client-logo{opacity:1;}
+    .client-name-sub{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:2px;text-align:center;}
+    .ratings-grid{display:grid;grid-template-columns:1fr 2fr;gap:2px;margin-top:8px;}
+    .rating-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:4px 0;border-bottom:1px solid var(--stone);}
+    .r-label{color:var(--grey);font-weight:300;}
+    .r-val{color:var(--dark);font-weight:500;font-size:11px;}
+  </style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mm">
+  <button class="mob-close" id="mc">✕</button>
+  <a href="#about" onclick="closeMob()">About</a>
+  <a href="#skills" onclick="closeMob()">Skills</a>
+  <a href="#projects" onclick="closeMob()">Work</a>
+  <a href="#clients" onclick="closeMob()">Clients</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
+
+<!-- PROJECT MODAL -->
+<div class="modal-ov" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="mClose">✕</button>
+    <div class="modal-gallery">
+      <div class="modal-gallery-wrap" id="mGallery"></div>
+      <button class="modal-nav modal-prev" id="mPrev">&#8592;</button>
+      <button class="modal-nav modal-next" id="mNext">&#8594;</button>
+      <div class="modal-dots" id="mDots"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tag" id="mTag"></div>
+      <div class="modal-title" id="mTitle"></div>
+      <div class="modal-desc" id="mDesc"></div>
+      <div class="modal-chips" id="mChips"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container">
+    <a href="#hero" class="nav-logo">MOHAMED<span style="color:var(--orange)">.</span>EISA</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#clients">Clients</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://heyzine.com/flip-book/d0443eb6c6.html" target="_blank" class="nav-cta">Portfolio ↗</a></li>
+    </ul>
+    <div class="ham" id="ham"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ov"></div>
+  <div class="hero-content">
+    <div class="container">
+      <p class="hero-eye">Riyadh, Saudi Arabia &nbsp;·&nbsp; Open to Opportunities</p>
+      <h1 class="hero-name">MOHAMED<br><span>EISA</span></h1>
+      <p class="hero-titles"><strong>Architect</strong> &nbsp;·&nbsp; <strong>BIM Modeler</strong> &nbsp;·&nbsp; CAD Designer</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-pri">View My Work</a>
+        <a href="https://heyzine.com/flip-book/d0443eb6c6.html" target="_blank" class="btn btn-out">Portfolio Flipbook ↗</a>
+        <a href="#contact" class="btn btn-out">Get in Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <p class="section-label anim">Profile</p>
+        <h2 class="about-heading anim d1">Where BIM<br>Meets<br><span class="o">Live Events</span></h2>
+        <p class="about-body anim d2">
+          As an <span class="ob">Architect</span>, I collaborate directly with
+          <span class="ob">Balich Wonder Studio</span> —
+          one of the world's foremost live entertainment production companies — to design and deliver 3D operational layouts for
+          large-scale cultural events, theatrical productions, and international programmes across Saudi Arabia.
+        </p>
+        <p class="about-body anim d3">
+          My technical foundation runs equally deep: I specialise in precision <span class="ob">BIM coordination</span> at
+          LOD 300–400, including custom Revit family creation and multidisciplinary clash detection in
+          <span class="ob">Navisworks</span>. I produce full shop drawing packages and cross-disciplinary
+          documentation for commercial construction projects.
+        </p>
+        <p class="about-body anim d4" style="margin-bottom:0;">
+          I work at the intersection of technical accuracy and spatial storytelling —
+          where models, plans, and drawings become built reality.
+        </p>
+        <div class="anim d5" style="margin-top:32px;">
+          <a href="#contact" class="btn btn-dk">Let's Work Together →</a>
+        </div>
+      </div>
+      <div>
+        <div class="about-stats anim d2">
+          <div class="stat-box">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Years of Experience</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">10+</div>
+            <div class="stat-label">Projects Delivered</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" style="font-size:36px;line-height:1.1;">BIM<br>Cert.</div>
+            <div class="stat-label" style="margin-top:6px;">Certified 2023</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">20+</div>
+            <div class="stat-label">Event Layout Packages</div>
+          </div>
+        </div>
+
+        <div class="anim d4" style="margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);padding:3px 10px;">Revit</span>
+          <span style="font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);padding:3px 10px;">Navisworks</span>
+          <span style="font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);padding:3px 10px;">AutoCAD</span>
+          <span style="font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);padding:3px 10px;">BIM Coordination</span>
+          <span style="font-size:10px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);padding:3px 10px;">Event Production</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-head">
+      <p class="section-label anim">Capabilities</p>
+      <h2 class="sec-title anim d1">What I Bring<br>to the Table</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="sk-card anim d1">
+        <div class="sk-icon">🏗️</div>
+        <div class="sk-title">BIM & Modeling</div>
+        <div class="sk-bar"></div>
+        <ul class="sk-list">
+          <li>Autodesk Revit — Custom Family Creation</li>
+          <li>LOD 300–400 BIM Modeling</li>
+          <li>Navisworks — Clash Detection</li>
+          <li>4D Construction Scheduling (TimeLiner)</li>
+          <li>CAD-to-BIM Conversion</li>
+          <li>AutoCAD</li>
+          <li>SketchUp</li>
+        </ul>
+      </div>
+      <div class="sk-card anim d2">
+        <div class="sk-icon">📐</div>
+        <div class="sk-title">Documentation</div>
+        <div class="sk-bar"></div>
+        <ul class="sk-list">
+          <li>Shop Drawings Production</li>
+          <li>Material & Submittal Coordination</li>
+          <li>Drawing & Document Control</li>
+          <li>Space & Zone Scheduling</li>
+          <li>Large-Scale Operational Layouts</li>
+          <li>Event Logistics Planning</li>
+          <li>Cross-disciplinary Coordination</li>
+        </ul>
+      </div>
+      <div class="sk-card anim d3">
+        <div class="sk-icon">🎨</div>
+        <div class="sk-title">Visualization</div>
+        <div class="sk-bar"></div>
+        <ul class="sk-list">
+          <li>D5 Render</li>
+          <li>V-Ray</li>
+          <li>Lumion</li>
+          <li>Enscape</li>
+          <li>Architectural Concept Design</li>
+          <li>3D Operational Modeling</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label anim" style="color:var(--grey);">Selected Work</p>
+    <h2 class="proj-heading anim d1">Projects That<br><span>Speak</span> for Themselves</h2>
+    <p class="proj-sub anim d2">Click any project to see the full story and all images.</p>
+
+    <div class="proj-grid" id="projGrid">
+      <!-- cards injected by JS -->
+    </div>
+
+    <div style="margin-top:44px;text-align:center;" class="anim">
+      <a href="https://heyzine.com/flip-book/d0443eb6c6.html" target="_blank" class="btn btn-pri">View Full Portfolio Flipbook ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOGRAPHY -->
+<section id="photography">
+  <div class="container">
+    <p class="section-label anim" style="color:var(--grey);">Through My Lens</p>
+    <h2 class="photo-heading anim d1">Architectural Eye</h2>
+    <p class="photo-sub anim d2">A personal series of architectural photographs taken in Ethiopia.</p>
+    <div class="photo-grid anim d3">
+      <div class="photo-item"><img src="./images/ph1.jpg" alt="Stone staircase, Ethiopia" loading="lazy"><div class="photo-caption">Stone staircase · Ethiopia</div></div>
+      <div class="photo-item"><img src="./images/ph2.jpg" alt="Carved doorway, Ethiopia" loading="lazy"><div class="photo-caption">Carved doorway · Ethiopia</div></div>
+      <div class="photo-item"><img src="./images/ph3.jpg" alt="Palm through window, Ethiopia" loading="lazy"><div class="photo-caption">Palm through window · Ethiopia</div></div>
+      <div class="photo-item"><img src="./images/ph4.jpg" alt="Stone interior, Ethiopia" loading="lazy"><div class="photo-caption">Stone interior · Ethiopia</div></div>
+      <div class="photo-item"><img src="./images/ph5.jpg" alt="Garden steps, Ethiopia" loading="lazy"><div class="photo-caption">Garden steps · Ethiopia</div></div>
+      <div class="photo-item"><img src="./images/ph6.jpg" alt="Diamond facade, Ethiopia" loading="lazy"><div class="photo-caption">Diamond facade · Ethiopia</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="container">
+    <p class="clients-label anim">Trusted By</p>
+    <div class="clients-grid anim d2">
+
+      <div class="client-card">
+        <div class="client-logo-wrap">
+          <img src="./images/logo-balich.png" alt="Balich Wonder Studio" class="client-logo">
+        </div>
+        <div class="client-name-sub">Balich Wonder Studio</div>
+        <div class="client-note">Live Entertainment Production</div>
+      </div>
+
+      <div class="client-card">
+        <div class="client-logo-wrap">
+          <img src="./images/logo-golf.png" alt="Riyadh Golf Club" class="client-logo client-logo-gold">
+        </div>
+        <div class="client-name-sub">Riyadh Golf Club</div>
+        <div class="client-note">Saudi Golf</div>
+      </div>
+
+      <div class="client-card">
+        <div class="client-logo-wrap">
+          <img src="./images/logo-moc.png" alt="Ministry of Culture" class="client-logo">
+        </div>
+        <div class="client-name-sub">Ministry of Culture</div>
+        <div class="client-note">Kingdom of Saudi Arabia</div>
+      </div>
+
+      <div class="client-card">
+        <div class="client-logo-wrap">
+          <img src="./images/logo-dgda.png" alt="Diriyah Gate" class="client-logo client-logo-gold">
+        </div>
+        <div class="client-name-sub">Diriyah Gate</div>
+        <div class="client-note">DGDA — Mayadeen</div>
+      </div>
+
+      <div class="client-card">
+        <div class="client-logo-wrap client-logo-wrap-dark">
+          <img src="./images/logo-vocally.jpg" alt="Vocally" class="client-logo client-logo-sq">
+        </div>
+        <div class="client-name-sub">Vocally</div>
+        <div class="client-note">3 Projects Delivered</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RATINGS -->
+<section id="ratings">
+  <div class="container">
+    <p class="section-label anim">Client Feedback</p>
+    <h2 class="sec-title anim d1" style="font-size:clamp(32px,4vw,52px);">What Clients Say</h2>
+    <p style="font-size:13px;color:var(--grey);margin-top:8px;margin-bottom:40px;" class="anim d2">
+      Project: <strong>CEER Factory Launch — Event Technical Drawings</strong> &nbsp;·&nbsp; Balich Wonder Studios
+    </p>
+    <div class="ratings-grid">
+
+      <div class="rating-card anim d1">
+        <div class="stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          <span class="star">★</span><span class="star">★</span>
+        </div>
+        <div style="font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;">5 / 5 — Excellent</div>
+        <div class="rating-text">"Exceptional work across all deliverables — communication was excellent, quality was excellent, and timelines were met."</div>
+        <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;">
+          <div class="rating-row"><span class="r-label">Communication</span><span class="r-val">Excellent ✓</span></div>
+          <div class="rating-row"><span class="r-label">Deliverable Quality</span><span class="r-val">Excellent ✓</span></div>
+          <div class="rating-row"><span class="r-label">Timeliness</span><span class="r-val">Excellent ✓</span></div>
+          <div class="rating-row"><span class="r-label">Would Work Again</span><span class="r-val">Definitely Yes ✓</span></div>
+        </div>
+        <div class="rating-client" style="margin-top:20px;">Samer Rizk</div>
+        <div class="rating-proj">Balich Wonder Studios</div>
+      </div>
+
+      <div class="rating-card anim d2" style="grid-column:span 2;">
+        <div class="stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          <span class="star">★</span><span class="star">★</span>
+        </div>
+        <div style="font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;">5 / 5 — Excellent</div>
+        <div class="rating-text">"As a co-worker on this pitch for BalichWS in the first week of June, it was a pleasure working with Mohamed Eisa as he is a highly skilled CAD draftsman. With great attention to detail in the drawings he produced."</div>
+        <div style="margin-top:18px;display:flex;flex-direction:column;gap:6px;">
+          <div class="rating-row"><span class="r-label">Communication</span><span class="r-val">Excellent ✓</span></div>
+          <div class="rating-row"><span class="r-label">Deliverable Quality</span><span class="r-val">Excellent ✓</span></div>
+          <div class="rating-row"><span class="r-label">Timeliness</span><span class="r-val">Excellent ✓</span></div>
+          <div class="rating-row"><span class="r-label">Would Work Again</span><span class="r-val">Definitely Yes ✓</span></div>
+        </div>
+        <div class="rating-client" style="margin-top:20px;">Tom Walter</div>
+        <div class="rating-proj">Balich Wonder Studios</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="container">
+    <p class="section-label anim">Education & Training</p>
+    <h2 class="sec-title anim d1" style="font-size:clamp(32px,4vw,52px);">Certifications</h2>
+    <div class="certs-grid anim d2">
+      <div class="cert-card">
+        <div class="cert-yr">2023</div>
+        <div class="cert-name">BIM for Engineers</div>
+        <div class="cert-iss">Professional Certification</div>
+        <span class="cert-badge">Verified</span>
+      </div>
+      <div class="cert-card">
+        <div class="cert-yr">2023</div>
+        <div class="cert-name">Google Project Management</div>
+        <div class="cert-iss">Foundations & Project Initiation</div>
+        <span class="cert-badge">Verified</span>
+      </div>
+      <div class="cert-card">
+        <div class="cert-yr">2023</div>
+        <div class="cert-name">Construction Project Management</div>
+        <div class="cert-iss">Columbia University</div>
+        <span class="cert-badge">Verified</span>
+      </div>
+      <div class="cert-card">
+        <div class="cert-yr">2026</div>
+        <div class="cert-name">ACP: Revit (Architecture)</div>
+        <div class="cert-iss">Autodesk Certified Professional</div>
+        <span class="cert-badge ip">In Progress</span>
+      </div>
+    </div>
+    <div class="edu-bar anim">
+      <div>
+        <div class="edu-title">B.Sc. in Architecture</div>
+        <div class="edu-sub">Faculty of Architecture, Ribat National University, Khartoum — March 2021</div>
+      </div>
+      <span class="tag-pill">Architecture</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <p class="section-label anim">Get In Touch</p>
+        <h2 class="contact-heading anim d1">Let's Build<br>Something<br><em>Together</em></h2>
+        <p class="contact-body anim d2">
+          Available for <strong>BIM Modeler</strong>, <strong>BIM Coordinator</strong>, and <strong>Event Production</strong> roles — particularly on giga-projects, cultural infrastructure, and large-scale productions in Saudi Arabia.
+        </p>
+        <div class="contact-links anim d3">
+          <a href="mailto:arc.mohamed.eisa@gmail.com" class="cl">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            arc.mohamed.eisa@gmail.com
+          </a>
+          <a href="https://wa.me/966536849887" target="_blank" class="cl">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.06 6.06l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+            +966 53 684 9887
+          </a>
+          <a href="https://linkedin.com/in/mohamedeisa001" target="_blank" class="cl">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            linkedin.com/in/mohamedeisa001
+          </a>
+        </div>
+      </div>
+      <div class="anim d2">
+        <div class="big-ctas">
+          <a href="https://heyzine.com/flip-book/d0443eb6c6.html" target="_blank" class="big-cta bc-or">
+            <div><div class="bct">View Portfolio</div><div class="bcs">Full project flipbook</div></div>
+            <div class="bca">↗</div>
+          </a>
+          <a href="mailto:arc.mohamed.eisa@gmail.com" class="big-cta bc-dk">
+            <div><div class="bct">Send an Email</div><div class="bcs">arc.mohamed.eisa@gmail.com</div></div>
+            <div class="bca">→</div>
+          </a>
+          <a href="https://wa.me/966536849887" target="_blank" class="big-cta bc-md">
+            <div><div class="bct">WhatsApp</div><div class="bcs">+966 53 684 9887</div></div>
+            <div class="bca">↗</div>
+          </a>
+          <a href="https://linkedin.com/in/mohamedeisa001" target="_blank" class="big-cta bc-bl">
+            <div><div class="bct">LinkedIn</div><div class="bcs">Connect professionally</div></div>
+            <div class="bca">↗</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="fi">
+      <div class="fl">ME<span>.</span></div>
+      <div class="fc">© 2026 Mohamed Eisa · Architect & BIM Modeler · Riyadh, KSA</div>
+      <div class="fs">
+        <a href="https://linkedin.com/in/mohamedeisa001" target="_blank">LinkedIn</a>
+        <a href="https://heyzine.com/flip-book/d0443eb6c6.html" target="_blank">Portfolio</a>
+        <a href="mailto:arc.mohamed.eisa@gmail.com">Email</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── PROJECT DATA ───
+const PROJECTS = [
+  {
+    tag: 'BIM · Navisworks · 4D Scheduling · WorldSkills France',
+    name: 'WorldSkills BIM Practice Project',
+    desc: 'A complete BIM workflow covering 3D architectural and structural modeling from 2D CAD drawings, federated model assembly in Navisworks, multidisciplinary clash detection (Beams vs Ducts, Beams vs Cables, Ceiling vs Cables), and 4D construction simulation using TimeLiner. Includes custom shared parameters, color-coded zone plans, room schedules, and full A1 documentation sheets.',
+    chips: ['Revit','Navisworks','CAD-to-BIM','Clash Detection','4D TimeLiner','LOD 300-400','Documentation','Shared Parameters'],
+    images: ['p1-bim.jpg','p1-2.jpg','p1-3.jpg','p1-4.jpg','p1-5.jpg','p1-6.jpg','p1-7.jpg'],
+    thumb: 'p1-bim.jpg',
+    featured: true
+  },
+  {
+    tag: 'Construction Documentation · AutoCAD · Shop Drawings',
+    name: 'Riyadh Golf Club Basement Renovation',
+    desc: 'Full shop drawing package for Saudi Golf\'s basement renovation at Riyadh Golf Club — dimension plans, tile layout plans, lighting plans, and floor box layout. Produced in AutoCAD with full cross-disciplinary coordination and on-site execution support.',
+    chips: ['AutoCAD','Shop Drawings','Dimension Plans','Lighting Plans','Tiles Layout','Floor Box Layout','Site Coordination'],
+    images: ['p2-golf.jpg','p2-2.jpg','p2-3.jpg','p2-4.jpg','p2-5.jpg','p2-6.jpg','p2-7.jpg','p2-8.jpg'],
+    thumb: 'p2-golf.jpg',
+    featured: false
+  },
+  {
+    tag: 'Concept Design · Visualization · D5 Render',
+    name: 'Concept Design 01',
+    desc: 'A contemporary residential villa concept exploring exposed concrete and warm timber cladding. Rendered at dusk using D5 Render to highlight materiality, shadow play, and the relationship between built form and landscape.',
+    chips: ['Concept Design','D5 Render','Residential Villa','Architectural Visualization'],
+    images: ['p3-villa1.jpg'],
+    thumb: 'p3-villa1.jpg',
+    featured: false
+  },
+  {
+    tag: 'Concept Design · Visualization · D5 Render',
+    name: 'Concept Design 02',
+    desc: 'A contemporary residential villa with a timber screen facade and two-car carport. Rendered in natural daylight to highlight materiality, landscaping, and the street-facing composition.',
+    chips: ['Concept Design','D5 Render','Residential Villa','Architectural Visualization'],
+    images: ['p4-villa2.jpg'],
+    thumb: 'p4-villa2.jpg',
+    featured: false
+  },
+  {
+    tag: 'Event Production · Ministry of Culture',
+    name: 'Wicked The Musical',
+    desc: '3D operational planning for a full theatrical production in collaboration with Balich Wonder Studio for the Ministry of Culture, KSA — venue zoning, audience flow, front/back-of-house separation, parking logistics, and complete operational models produced at scale.',
+    chips: ['3D Operational Planning','Venue Zoning','Front/Back of House','Audience Flow','Parking Logistics','Balich Wonder Studio','Ministry of Culture'],
+    images: ['p5-wicked.jpg','p5-2.jpg','p5-3.jpg'],
+    thumb: 'p5-wicked.jpg',
+    featured: false
+  },
+  {
+    tag: 'Event Production · Diriyah Gate DGDA',
+    name: 'Souk By Dragone',
+    desc: 'Large-scale cultural event operations planning at Mayadeen, Diriyah Gate, for client DGDA. Deliverables include full-site manpower plans, parking marshal plans, accreditation zoning, indoor signage plans, and rehearsal tent detail layouts — all produced across multiple coordinated drawing revisions.',
+    chips: ['Manpower Plans','Parking Marshal','Accreditation Zoning','Indoor Signage','Operational Layout','Diriyah Gate DGDA'],
+    images: ['p6-souk.jpg','p6-2.jpg','p6-3.jpg','p6-4.jpg'],
+    thumb: 'p6-souk.jpg',
+    featured: false
+  }
+];
+
+// ─── BUILD PROJECT CARDS ───
+const grid = document.getElementById('projGrid');
+PROJECTS.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'pc anim' + (i === 0 ? '' : '') + ' d' + Math.min(i+1, 6);
+  if (i === 0) card.style.gridColumn = 'span 2';
+  card.innerHTML = `
+    <div class="pc-img"><img src="./images/${p.thumb}" alt="${p.name}" loading="lazy"></div>
+    <div class="pc-info">
+      <div class="pc-tag">${p.tag}</div>
+      <div class="pc-name">${p.name}</div>
+      <div class="pc-desc">${p.desc.substring(0,160)}…</div>
+      <div class="pc-cta">View Project →</div>
+    </div>`;
+  card.addEventListener('click', () => openModal(i));
+  grid.appendChild(card);
+});
+
+// ─── MODAL LOGIC ───
+let curSlide = 0, curProject = null;
+const modal = document.getElementById('modal');
+const gallery = document.getElementById('mGallery');
+const dots = document.getElementById('mDots');
+
+function openModal(idx) {
+  curProject = PROJECTS[idx];
+  curSlide = 0;
+  gallery.innerHTML = '';
+  dots.innerHTML = '';
+  curProject.images.forEach((img, i) => {
+    const s = document.createElement('div');
+    s.className = 'modal-slide';
+    s.innerHTML = `<img src="./images/${img}" alt="${curProject.name} ${i+1}" loading="${i===0?'eager':'lazy'}">`;
+    gallery.appendChild(s);
+    const d = document.createElement('button');
+    d.className = 'modal-dot' + (i===0?' active':'');
+    d.onclick = () => goSlide(i);
+    dots.appendChild(d);
+  });
+  document.getElementById('mTag').textContent = curProject.tag;
+  document.getElementById('mTitle').textContent = curProject.name;
+  document.getElementById('mDesc').textContent = curProject.desc;
+  document.getElementById('mChips').innerHTML = curProject.chips.map(c => `<span class="chip">${c}</span>`).join('');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  updateSlide();
+}
+
+function goSlide(n) {
+  curSlide = (n + curProject.images.length) % curProject.images.length;
+  updateSlide();
+}
+
+function updateSlide() {
+  const slideW = document.querySelector('.modal-gallery').offsetWidth || 800;
+  gallery.style.transition = 'transform .4s ease';
+  gallery.style.transform = `translateX(${-curSlide * slideW}px)`;
+  document.querySelectorAll('.modal-dot').forEach((d,i) => d.classList.toggle('active', i === curSlide));
+}
+
+document.getElementById('mPrev').onclick = () => goSlide(curSlide - 1);
+document.getElementById('mNext').onclick = () => goSlide(curSlide + 1);
+document.getElementById('mClose').onclick = closeModal;
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (!modal.classList.contains('open')) return;
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowRight') goSlide(curSlide + 1);
+  if (e.key === 'ArrowLeft') goSlide(curSlide - 1);
+});
+
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ─── NAV ───
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+
+// ─── HERO ───
+window.addEventListener('load', () => document.getElementById('hero').classList.add('loaded'));
+
+// ─── MOBILE MENU ───
+document.getElementById('ham').onclick = () => document.getElementById('mm').classList.add('open');
+document.getElementById('mc').onclick = closeMob;
+function closeMob() { document.getElementById('mm').classList.remove('open'); }
+
+// ─── SCROLL ANIM ───
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }});
+}, { threshold: 0.08 });
+document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+
+// ─── TOUCH SWIPE ON MODAL ───
+let tx = 0;
+gallery.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+gallery.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) goSlide(curSlide + (dx < 0 ? 1 : -1));
+});
+</script>
+</body>
+</html>
